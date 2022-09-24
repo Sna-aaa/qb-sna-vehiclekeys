@@ -11,6 +11,8 @@ Vehicle keys as items
 - Once in the car check is made for the item in inventory for the key to start the engine
 - If the player have no key he can try to hotwire the car
 
+- Add fee payment
+
 ## Requirements
 - [qb-core](https://github.com/qbcore-framework/qb-core)
 

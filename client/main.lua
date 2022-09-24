@@ -370,17 +370,22 @@ CreateThread(function()
 			if IsPedInAnyVehicle(ped, false) then
 				HwVehicle = GetVehiclePedIsIn(ped)
 				HwVehiclePlate = QBCore.Functions.GetPlate(HwVehicle)
-				if GetPedInVehicleSeat(HwVehicle, -1) == ped and not HasKeys(HwVehiclePlate) and not isBlacklistedVehicle(HwVehicle) and Hotwired ~= HwVehiclePlate then
-					EngShut = true
-				else
-					EngShut = false
-				end
-				if not IsHotwiring and Hotwired ~= HwVehiclePlate then
-                    HwVehiclePos = GetOffsetFromEntityInWorldCoords(HwVehicle, 0.0, 1.0, 0.5)
-					HwText = true
-				else
-					HwText = false
-				end
+
+                QBCore.Functions.TriggerCallback('qb-vehiclekeys:server:HasKey', function(result)
+                    if not result then
+                        if GetPedInVehicleSeat(HwVehicle, -1) == ped and not isBlacklistedVehicle(HwVehicle) and Hotwired ~= HwVehiclePlate then
+                            EngShut = true
+                        else
+                            EngShut = false
+                        end
+                        if not IsHotwiring and Hotwired ~= HwVehiclePlate then
+                            HwVehiclePos = GetOffsetFromEntityInWorldCoords(HwVehicle, 0.0, 1.0, 0.5)
+                            HwText = true
+                        else
+                            HwText = false
+                        end            
+                    end
+                end, HwVehiclePlate)
 			else
 				HwText = false
 			end
