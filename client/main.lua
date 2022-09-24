@@ -274,20 +274,14 @@ local function CreateNpc()
     })
 
 	local Blip = AddBlipForCoord(Config.KeyMasterLocation.x, Config.KeyMasterLocation.y, Config.KeyMasterLocation.z)
-	SetBlipSprite(Blip, 255)
+	SetBlipSprite(Blip, 134)
 	SetBlipColour(Blip, 3)
-	SetBlipScale(Blip, 0.8)
+	--SetBlipScale(Blip, 0.8)
 	SetBlipDisplay(Blip, 4)
 	SetBlipAsShortRange(Blip, true)
 	BeginTextCommandSetBlipName("STRING")
 	AddTextComponentSubstringPlayerName(Lang:t('info.blip'))
 	EndTextCommandSetBlipName(Blip)
---134
---186
---187
---255
---763
---811
 end
 
 local function DeleteNpc()
@@ -341,6 +335,7 @@ RegisterNetEvent('qb-vehiclekeys:client:ResetLocksMenu', function(data)
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+    Wait(2000)
     CreateNpc()
 end)
 
