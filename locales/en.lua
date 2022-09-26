@@ -12,6 +12,8 @@ local Translations = {
         not_initialized = "Locks are not initialized, please reset locks",
         key_received = "You received the key",
         locks_reset = "Locks changed for car",
+        not_enough_money = "You have not enough money",
+        temp_key_received = "You received a temporary key",
     }
 }
 

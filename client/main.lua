@@ -326,6 +326,12 @@ local function KeyMenu(type)
 	end)	
 end
 -- Events
+-- Backwards Compatibility ONLY -- Remove at some point --
+RegisterNetEvent('vehiclekeys:client:SetOwner', function(plate)
+    TriggerServerEvent('qb-vehiclekeys:server:GiveTempKey', plate)
+end)
+-- Backwards Compatibility ONLY -- Remove at some point --
+
 RegisterNetEvent('qb-vehiclekeys:client:GiveKeyMenu', function(data)
 	KeyMenu("give")
 end)
@@ -378,12 +384,15 @@ CreateThread(function()
                         else
                             EngShut = false
                         end
-                        if not IsHotwiring and Hotwired ~= HwVehiclePlate then
+                        if GetPedInVehicleSeat(HwVehicle, -1) == ped and not IsHotwiring and Hotwired ~= HwVehiclePlate then
                             HwVehiclePos = GetOffsetFromEntityInWorldCoords(HwVehicle, 0.0, 1.0, 0.5)
                             HwText = true
                         else
                             HwText = false
-                        end            
+                        end
+                    else
+                        EngShut = false
+                        HwText = false
                     end
                 end, HwVehiclePlate)
 			else
