@@ -6,13 +6,15 @@ Please join my discord : https://discord.gg/kvSwVzD8Rd
 
 ## Features
 - The key is created with the vehicle plate and model in item description
-- Keys are given at car buy (events available), can be bought and managed at the locksmith
-- There is an option to change the locks for a specific car at the locksmith
+- Keys are given at car buy (events available)
+- The locksmith is used to buy additional keys and change locks of a car
 - When a player tries to enter the car, it check the lock value of the car
 - Npc cars are accessible the gta way (carjacking or window breaking)
 - If car is locked the player can lockpick it, else the player can enter
-- Once in the car check is made for the item in inventory for the key to start the engine
+- Once the player is in the car a check is made for the key item in inventory to start the engine
 - If the player have no key he can try to hotwire the car
+- For admin cars (/car) the car is now yours temporarly, so you have an "old style invisible key"
+- When a job spawn a free car, the player receives the same old style key, so no hotwire
 
 ## Requirements
 - [qb-core](https://github.com/qbcore-framework/qb-core)
@@ -34,7 +36,7 @@ Please join my discord : https://discord.gg/kvSwVzD8Rd
             $(".item-info-description").html('<p>Plate : ' + itemData.info.plate + '</p>');
 ```
 
-Add call event for keys in qb-vehicleshop/client.lua
+Add call event for keys in qb-vehicleshop/client.lua and comment SetOwner call
 ```lua
 RegisterNetEvent('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, plate)
     tempShop = insideShop -- temp hacky way of setting the shop because it changes after the callback has returned since you are outside the zone
@@ -51,7 +53,7 @@ RegisterNetEvent('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, p
 end)
 ```
 
-Comment this line in your garage script, here in qb-garage/client/main.lua
+Comment SetOwner call in your garage script, here in qb-garage/client/main.lua
 ```lua
 RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
     local type = data.type
