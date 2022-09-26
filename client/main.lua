@@ -346,7 +346,6 @@ RegisterNetEvent('qb-vehiclekeys:client:ResetLocksMenu', function(data)
 end)
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-    Wait(2000)
     CreateNpc()
 end)
 

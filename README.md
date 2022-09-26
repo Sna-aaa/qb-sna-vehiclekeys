@@ -34,7 +34,7 @@ Please join my discord : https://discord.gg/kvSwVzD8Rd
             $(".item-info-description").html('<p>Plate : ' + itemData.info.plate + '</p>');
 ```
 
-Add call event for keys in qb-vehicleshop
+Add call event for keys in qb-vehicleshop/client.lua
 ```lua
 RegisterNetEvent('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, plate)
     tempShop = insideShop -- temp hacky way of setting the shop because it changes after the callback has returned since you are outside the zone
@@ -51,7 +51,7 @@ RegisterNetEvent('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, p
 end)
 ```
 
-Comment this line in your garage script, here for qb-garage
+Comment this line in your garage script, here in qb-garage/client/main.lua
 ```lua
 RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
     local type = data.type
