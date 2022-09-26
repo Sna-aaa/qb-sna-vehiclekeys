@@ -1,6 +1,9 @@
 # qb-sna-vehiclekeys
 Vehicle keys as items
 
+## Support
+Please join my discord : https://discord.gg/kvSwVzD8Rd
+
 ## Features
 - The key is created with the vehicle plate and model in item description
 - Keys are given at car buy (events available), can be bought and managed at the locksmith
@@ -10,8 +13,6 @@ Vehicle keys as items
 - If car is locked the player can lockpick it, else the player can enter
 - Once in the car check is made for the item in inventory for the key to start the engine
 - If the player have no key he can try to hotwire the car
-
-- Add fee payment
 
 ## Requirements
 - [qb-core](https://github.com/qbcore-framework/qb-core)
