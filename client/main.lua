@@ -237,6 +237,11 @@ end)
 
 
 local function CreateNpc()
+    RequestModel('cs_floyd')
+    while not HasModelLoaded('cs_floyd') do
+        Citizen.Wait(5)
+    end
+    
 	KeyMaster = CreatePed(4, GetHashKey('cs_floyd'), Config.KeyMasterLocation.x, Config.KeyMasterLocation.y, Config.KeyMasterLocation.z, Config.KeyMasterLocation.w, false, false)
 	SetEntityAsMissionEntity(KeyMaster, true, true)
 	SetPedHearingRange(KeyMaster, 0.0)
