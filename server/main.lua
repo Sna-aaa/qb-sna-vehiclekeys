@@ -93,8 +93,8 @@ QBCore.Functions.CreateCallback('qb-vehiclekeys:server:HasKey', function(source,
     local citizenid = QBCore.Functions.GetPlayer(src).PlayerData.citizenid
 	local ok = false
     if Player then
-		if VehicleList[plate][citizenid] then
-			cb(true)
+		if VehicleList[plate] and VehicleList[plate][citizenid] then
+			cb(true)				
 		else
 			MySQL.query('SELECT * FROM player_vehicles WHERE plate = ?', {plate}, function(result)
 				if result[1] then
