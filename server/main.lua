@@ -4,13 +4,13 @@ local VehicleList = {}
 local function ChangeLocks(plate)
 	MySQL.query('SELECT * FROM player_vehicles WHERE plate = ?', {plate}, function(result)
 		if result[1] then
-			local mods = json.decode(result[1].mods)
-			if mods.lock then
-				mods.lock = mods.lock + 1
+			local lock = result[1].lock
+			if lock then
+				lock = lock + 1
 			else
-				mods.lock = 4321
+				lock = 4321
 			end
-			MySQL.update('UPDATE player_vehicles SET mods = ? WHERE plate = ?', {json.encode(mods), plate})
+			MySQL.update('UPDATE player_vehicles SET lock = ? WHERE plate = ?', {lock, plate})
 		end
 	end)
 end
@@ -18,11 +18,10 @@ end
 local function GiveKey(plate, model, player, src)
 	MySQL.query('SELECT * FROM player_vehicles WHERE plate = ?', {plate}, function(result)
 		if result[1] then
-			local mods = json.decode(result[1].mods)
+			local lock = result[1].lock
 			local info = {}
-			print(mods.lock)
-			if mods.lock then
-				info.lock = mods.lock
+			if lock then
+				info.lock = lock
 				info.plate = plate
 				info.model = model
 				player.Functions.AddItem('vehiclekey', 1, nil, info)
@@ -98,11 +97,11 @@ QBCore.Functions.CreateCallback('qb-vehiclekeys:server:HasKey', function(source,
 		else
 			MySQL.query('SELECT * FROM player_vehicles WHERE plate = ?', {plate}, function(result)
 				if result[1] then
-					local mods = json.decode(result[1].mods)
+					local lock = result[1].lock
 					local items = Player.Functions.GetItemsByName('vehiclekey')
 					if items then
 						for _, v in pairs(items) do
-							if v.info.plate == plate and v.info.lock == mods.lock then
+							if v.info.plate == plate and v.info.lock == lock then
 								ok = true
 							end
 						end

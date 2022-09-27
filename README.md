@@ -24,6 +24,8 @@ Please join my discord : https://discord.gg/kvSwVzD8Rd
 
 - Copy the vehiclekeys image in img folder into qb-inventory\html\images
 
+- Import player_vehicles.sql into your database
+
 - Add in qb-core/shared/items.lua
 ```lua
 	['vehiclekey'] 				 	 = {['name'] = 'vehiclekey',					['label'] = 'Vehicle key', 					['weight'] = 0, 		['type'] = 'item', 		['image'] = 'vehiclekeys.png', 				['unique'] = true, 	['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = "This is a car key, take good care of it, if you lose it you probably won't be able to use your car"},
