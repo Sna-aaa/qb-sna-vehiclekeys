@@ -422,3 +422,21 @@ CreateThread(function()
 		Wait(sleep)
     end
 end)
+
+CreateThread(function()
+    if Config.LockpickNPCCars then
+        while true do
+            local sleep = 100
+            local ped = PlayerPedId()
+            local entering = GetVehiclePedIsTryingToEnter(ped)
+            if entering ~= 0 then
+                local status = GetVehicleDoorLockStatus(entering)
+                if status == 7 then
+                    SetVehicleDoorsLocked(entering, 2)
+                    sleep = 2000
+                end
+            end
+            Wait(sleep)
+        end
+    end
+end)
