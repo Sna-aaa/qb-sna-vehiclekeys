@@ -2,7 +2,7 @@ local QBCore = exports['qb-core']:GetCoreObject()
 local VehicleList = {}
 
 local function ChangeLocks(plate)
-	MySQL.query('SELECT * FROM player_vehicles WHERE plate = ?', {plate}, function(result)
+	MySQL.query('SELECT `lock` FROM player_vehicles WHERE plate = ?', {plate}, function(result)
 		if result[1] then
 			local lock = result[1].lock
 			if lock then
@@ -10,13 +10,13 @@ local function ChangeLocks(plate)
 			else
 				lock = 4321
 			end
-			MySQL.update('UPDATE player_vehicles SET lock = ? WHERE plate = ?', {lock, plate})
+			MySQL.update('UPDATE player_vehicles SET `lock` = ? WHERE plate = ?', {lock, plate})
 		end
 	end)
 end
 
 local function GiveKey(plate, model, player, src)
-	MySQL.query('SELECT * FROM player_vehicles WHERE plate = ?', {plate}, function(result)
+	MySQL.query('SELECT `lock` FROM player_vehicles WHERE plate = ?', {plate}, function(result)
 		if result[1] then
 			local lock = result[1].lock
 			local info = {}
@@ -95,7 +95,7 @@ QBCore.Functions.CreateCallback('qb-vehiclekeys:server:HasKey', function(source,
 		if VehicleList[plate] and VehicleList[plate][citizenid] then
 			cb(true)				
 		else
-			MySQL.query('SELECT * FROM player_vehicles WHERE plate = ?', {plate}, function(result)
+			MySQL.query('SELECT `lock` FROM player_vehicles WHERE plate = ?', {plate}, function(result)
 				if result[1] then
 					local lock = result[1].lock
 					local items = Player.Functions.GetItemsByName('vehiclekey')
