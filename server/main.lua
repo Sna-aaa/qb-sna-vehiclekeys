@@ -98,7 +98,6 @@ QBCore.Functions.CreateCallback('qb-vehiclekeys:server:HasKey', function(source,
 					local items = Player.Functions.GetItemsByName('vehiclekey')
 					if items then
 						for _, v in pairs(items) do
-							print(type(result.vlock), type(v.info.lock), result.vlock, v.info.lock)
 							if v.info.plate == plate and v.info.lock == mods then
 								ok = true
 							end
