@@ -27,7 +27,7 @@ local function AttemptPoliceAlert(type)
             chance = Config.PoliceNightAlertChance
         end
         if math.random() <= chance then
-           TriggerServerEvent('police:server:policeAlert', Lang:t('info.police', {value = type}))
+           TriggerServerEvent('police:server:policeAlert', Lang:t('message.police', {value = type}))
         end
         AlertSend = true
         SetTimeout(Config.AlertCooldown, function()
