@@ -7,6 +7,7 @@ local Translations = {
         resetkeyheader = "Choose car to reset locks",
         resetkeyitem = "%{value} (%{value2})",
         blip = "Locksmith",
+        hotwire = "~g~[H]~w~ - Hotwire",
     },
     message = {
         not_initialized = "Locks are not initialized, please reset locks",
@@ -14,6 +15,13 @@ local Translations = {
         locks_reset = "Locks changed for car",
         not_enough_money = "You have not enough money",
         temp_key_received = "You received a temporary key",
+        vehicle_locked = "Vehicle locked!",
+        vehicle_unlocked = "Vehicle unlocked!",
+        no_key = "You don't have keys to this vehicle.",
+        police = "Vehicle theft in progress. Type: %{value}",
+        lockpicked = "You managed to pick the door lock open!",
+        hotwiring = "Hotwiring the vehicle...",
+        hotwiring_fail = "You fail to hotwire the car and get frustrated.",
     }
 }
 

@@ -3,6 +3,7 @@ local KeyMaster
 local IsHotwiring = false
 local Hotwired
 local AlertSend = false
+local usingAdvanced
 
 local function DrawText3D(x, y, z, text)
     SetTextScale(0.35, 0.35)
@@ -26,7 +27,7 @@ local function AttemptPoliceAlert(type)
             chance = Config.PoliceNightAlertChance
         end
         if math.random() <= chance then
-           TriggerServerEvent('police:server:policeAlert', 'Vehicle theft in progress. Type: ' .. type)
+           TriggerServerEvent('police:server:policeAlert', Lang:t('info.police', {value = type}))
         end
         AlertSend = true
         SetTimeout(Config.AlertCooldown, function()
@@ -90,10 +91,10 @@ local function ToggleVehicleLocks(veh)
 					NetworkRequestControlOfEntity(veh)
 					if vehLockStatus == 1 then
 						SetVehicleDoorsLocked(veh, 2)
-						QBCore.Functions.Notify("Vehicle locked!", "primary")
+						QBCore.Functions.Notify(Lang:t("message.vehicle_locked"), "primary")   
 					else
 						SetVehicleDoorsLocked(veh, 1)
-						QBCore.Functions.Notify("Vehicle unlocked!", "success")
+						QBCore.Functions.Notify(Lang:t("message.vehicle_unlocked"), "success")
 					end
 	
 					SetVehicleLights(veh, 2)
@@ -104,7 +105,7 @@ local function ToggleVehicleLocks(veh)
 					Wait(300)
 					ClearPedTasks(ped)
 				else
-					QBCore.Functions.Notify("You don't have keys to this vehicle.", 'error')
+					QBCore.Functions.Notify(Lang:t("message.no_key"), 'error')
 				end
 			end, QBCore.Functions.GetPlate(veh))
         else
@@ -135,12 +136,8 @@ function lockpickFinish(success)
         TriggerServerEvent('hud:server:GainStress', math.random(1, 4))
         lastPickedVehicle = vehicle
 
-        if GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
-            TriggerServerEvent('qb-vehiclekeys:server:AcquireVehicleKeys', QBCore.Functions.GetPlate(vehicle))
-        else
-            QBCore.Functions.Notify('You managed to pick the door lock open!', 'success')
-            SetVehicleDoorsLocked(vehicle, 1)
-        end
+        QBCore.Functions.Notify(Lang:t("message.lockpicked"), 'success')
+        SetVehicleDoorsLocked(vehicle, 1)
 
     else
         TriggerServerEvent('hud:server:GainStress', math.random(1, 4))
@@ -165,7 +162,7 @@ local function Hotwire(vehicle, plate)
 
     SetVehicleAlarm(vehicle, true)
     SetVehicleAlarmTimeLeft(vehicle, hotwireTime)
-    QBCore.Functions.Progressbar("hotwire_vehicle", "Hotwiring the vehicle...", hotwireTime, false, true, {
+    QBCore.Functions.Progressbar("hotwire_vehicle", Lang:t("message.hotwiring"), hotwireTime, false, true, {
         disableMovement = true,
         disableCarMovement = true,
         disableMouse = false,
@@ -182,7 +179,7 @@ local function Hotwire(vehicle, plate)
 			Hotwired = plate
 			IsHotwiring = false
         else
-			QBCore.Functions.Notify("You fail to hotwire the car and get frustrated.", "error")
+			QBCore.Functions.Notify(Lang:t("message.hotwiring_fail"), "error")
 			Wait(Config.TimeBetweenHotwires)
 			IsHotwiring = false
         end
@@ -239,7 +236,7 @@ end)
 local function CreateNpc()
     RequestModel('cs_floyd')
     while not HasModelLoaded('cs_floyd') do
-        Citizen.Wait(5)
+        Wait(5)
     end
     
 	KeyMaster = CreatePed(4, GetHashKey('cs_floyd'), Config.KeyMasterLocation.x, Config.KeyMasterLocation.y, Config.KeyMasterLocation.z, Config.KeyMasterLocation.w, false, false)
@@ -413,7 +410,7 @@ CreateThread(function()
 
 		if HwText then
 			sleep = 0
-			DrawText3D(HwVehiclePos.x, HwVehiclePos.y, HwVehiclePos.z, "~g~[H]~w~ - Hotwire")
+			DrawText3D(HwVehiclePos.x, HwVehiclePos.y, HwVehiclePos.z, Lang:t("info.hotwire"))
 			if IsControlJustPressed(0, 74) and not IsHotwiring then
 				Hotwire(HwVehicle, HwVehiclePlate)
 			end
