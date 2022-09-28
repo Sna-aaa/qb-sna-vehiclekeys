@@ -5,7 +5,7 @@ local function ChangeLocks(plate)
 	MySQL.single("SELECT IFNULL(JSON_VALUE(p.mods,'$.lock'),0) AS 'lock' FROM player_vehicles p WHERE plate = ?", { plate }
 		,
 		function(result)
-			local mods = tonumber(result.lock) == 0 and 4321 or tonumber(result.lock)
+			local mods = tonumber(result.lock) == 0 and 4321 or tonumber(result.lock) +1
 			MySQL.update("UPDATE player_vehicles SET player_vehicles.mods = JSON_SET(player_vehicles.mods,'$.lock',?) WHERE plate = ?"
 				, { mods, plate })
 		end)
