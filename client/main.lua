@@ -5,6 +5,13 @@ local Hotwired
 local AlertSend = false
 local usingAdvanced
 
+local HwText
+local EngShut
+local HwVehicle
+local HwVehiclePos
+local HwVehiclePlate
+
+
 local function DrawText3D(x, y, z, text)
     SetTextScale(0.35, 0.35)
     SetTextFont(4)
@@ -46,6 +53,14 @@ RegisterNetEvent('qb-vehiclekeys:client:ToggleEngine', function()
                 SetVehicleEngineOn(vehicle, false, false, true)
             else
                 SetVehicleEngineOn(vehicle, true, false, true)
+            end
+        else
+            if Hotwired == HwVehiclePlate then
+                if EngineOn then
+                    SetVehicleEngineOn(vehicle, false, false, true)
+                else
+                    SetVehicleEngineOn(vehicle, true, false, true)
+                end                    
             end
         end
 	end, QBCore.Functions.GetPlate(vehicle))
@@ -357,12 +372,6 @@ AddEventHandler('onResourceStop', function(resource)
         DeleteNpc()
     end
 end)
-
-local HwText
-local EngShut
-local HwVehicle
-local HwVehiclePos
-local HwVehiclePlate
 
 -----------------------
 ----   Threads     ----
