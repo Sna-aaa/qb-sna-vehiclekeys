@@ -115,7 +115,7 @@ local function LockpickDoor(isAdvanced)
     local vehicle = QBCore.Functions.GetClosestVehicle()
 
     if vehicle == nil or vehicle == 0 then return end
-    if HasKeys(QBCore.Functions.GetPlate(vehicle)) then return end
+    --if HasKeys(QBCore.Functions.GetPlate(vehicle)) then return end
     if #(pos - GetEntityCoords(vehicle)) > 2.5 then return end
     if GetVehicleDoorLockStatus(vehicle) <= 0 then return end
 
