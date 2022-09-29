@@ -39,22 +39,17 @@ end
 RegisterNetEvent('qb-vehiclekeys:client:ToggleEngine', function()
     local EngineOn = GetIsVehicleEngineRunning(GetVehiclePedIsIn(PlayerPedId()))
     local vehicle = GetVehiclePedIsIn(PlayerPedId(), true)
-    if HasKeys(QBCore.Functions.GetPlate(vehicle)) then
-        if EngineOn then
-            SetVehicleEngineOn(vehicle, false, false, true)
-        else
-            SetVehicleEngineOn(vehicle, true, false, true)
-        end
-    end
-end)
 
-
-function HasKeys(plate)
 	QBCore.Functions.TriggerCallback('qb-vehiclekeys:server:HasKey', function(result)
-		return result
-	end, plate)
-end
-exports('HasKeys', HasKeys)
+        if result then
+            if EngineOn then
+                SetVehicleEngineOn(vehicle, false, false, true)
+            else
+                SetVehicleEngineOn(vehicle, true, false, true)
+            end
+        end
+	end, QBCore.Functions.GetPlate(vehicle))
+end)
 
 local function isBlacklistedVehicle(vehicle)
     local isBlacklisted = false
@@ -228,10 +223,14 @@ RegisterCommand('togglelocks', function()
     ToggleVehicleLocks(GetVehicle())
 end)
 
+RegisterKeyMapping('engine', Lang:t("info.engine"), 'keyboard', 'Y')
+RegisterCommand('engine', function()
+    TriggerEvent("qb-vehiclekeys:client:ToggleEngine")
+end)
+
 RegisterNetEvent('lockpicks:UseLockpick', function(isAdvanced)
     LockpickDoor(isAdvanced)
 end)
-
 
 local function CreateNpc()
     RequestModel('cs_floyd')

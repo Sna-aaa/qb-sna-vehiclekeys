@@ -8,6 +8,7 @@ local Translations = {
         resetkeyitem = "%{value} (%{value2})",
         blip = "Locksmith",
         hotwire = "~g~[H]~w~ - Hotwire",
+        engine = 'Toggle Engine',
     },
     message = {
         not_initialized = "Locks are not initialized, please reset locks",
