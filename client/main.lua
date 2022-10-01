@@ -1,5 +1,5 @@
 local QBCore = exports['qb-core']:GetCoreObject()
-local KeyMaster
+local KeyMasters = {}
 local IsHotwiring = false
 local Hotwired
 local AlertSend = false
@@ -248,62 +248,68 @@ RegisterNetEvent('lockpicks:UseLockpick', function(isAdvanced)
 end)
 
 local function CreateNpc()
-    RequestModel('cs_floyd')
-    while not HasModelLoaded('cs_floyd') do
+    RequestModel(Config.KeyMasterModel)
+    while not HasModelLoaded(Config.KeyMasterModel) do
         Wait(5)
     end
-    
-	KeyMaster = CreatePed(4, GetHashKey('cs_floyd'), Config.KeyMasterLocation.x, Config.KeyMasterLocation.y, Config.KeyMasterLocation.z, Config.KeyMasterLocation.w, false, false)
-	SetEntityAsMissionEntity(KeyMaster, true, true)
-	SetPedHearingRange(KeyMaster, 0.0)
-	SetPedSeeingRange(KeyMaster, 0.0)
-	SetPedAlertness(KeyMaster, 0.0)
-	SetPedFleeAttributes(KeyMaster, 0, 0)
-	SetBlockingOfNonTemporaryEvents(KeyMaster, true)
-	SetPedCombatAttributes(KeyMaster, 46, true)
-	SetPedFleeAttributes(KeyMaster, 0, 0)
-	--TaskStartScenarioInPlace(KeyMaster, Scenario, 0, true)
-	SetEntityInvincible(KeyMaster, true)
-	SetEntityCanBeDamaged(KeyMaster, false)
-	SetEntityProofs(KeyMaster, true, true, true, true, true, true, 1, true)
-	FreezeEntityPosition(KeyMaster, true)
-	SetEntityAsMissionEntity(KeyMaster, true, true)
 
-	exports['qb-target']:AddTargetEntity(KeyMaster, {
-        options = {
-            {
-                Type = "client",
-                event = "qb-vehiclekeys:client:GiveKeyMenu",
-                icon = "fas fa-car",
-                label = Lang:t("info.givekey"),
-                targeticon = 'fas fa-car-side' -- This is the icon of the target itself, the icon changes to this when it turns blue on this specific option, this is OPTIONAL
+    for k, location in pairs(Config.KeyMasterLocations) do
+        local index = #KeyMasters + 1
+        KeyMasters[index] = {}
+        KeyMasters[index].ped = CreatePed(4, GetHashKey(Config.KeyMasterModel), location.x, location.y, location.z, location.w, false, false)
+        SetEntityAsMissionEntity(KeyMasters[index].ped, true, true)
+        SetPedHearingRange(KeyMasters[index].ped, 0.0)
+        SetPedSeeingRange(KeyMasters[index].ped, 0.0)
+        SetPedAlertness(KeyMasters[index].ped, 0.0)
+        SetPedFleeAttributes(KeyMasters[index].ped, 0, 0)
+        SetBlockingOfNonTemporaryEvents(KeyMasters[index].ped, true)
+        SetPedCombatAttributes(KeyMasters[index].ped, 46, true)
+        SetPedFleeAttributes(KeyMasters[index].ped, 0, 0)
+        --TaskStartScenarioInPlace(KeyMasters[index].ped, Scenario, 0, true)
+        SetEntityInvincible(KeyMasters[index].ped, true)
+        SetEntityCanBeDamaged(KeyMasters[index].ped, false)
+        SetEntityProofs(KeyMasters[index].ped, true, true, true, true, true, true, 1, true)
+        FreezeEntityPosition(KeyMasters[index].ped, true)
+        SetEntityAsMissionEntity(KeyMasters[index].ped, true, true)
+
+        exports['qb-target']:AddTargetEntity(KeyMasters[index].ped, {
+            options = {
+                {
+                    Type = "client",
+                    event = "qb-vehiclekeys:client:GiveKeyMenu",
+                    icon = "fas fa-car",
+                    label = Lang:t("info.givekey"),
+                    targeticon = 'fas fa-car-side' -- This is the icon of the target itself, the icon changes to this when it turns blue on this specific option, this is OPTIONAL
+                },
+                {
+                    Type = "client",
+                    event = "qb-vehiclekeys:client:ResetLocksMenu",
+                    icon = "fas fa-car",
+                    label = Lang:t("info.resetlocks"),
+                    targeticon = 'fas fa-car-side' -- This is the icon of the target itself, the icon changes to this when it turns blue on this specific option, this is OPTIONAL
+                }
             },
-            {
-                Type = "client",
-                event = "qb-vehiclekeys:client:ResetLocksMenu",
-                icon = "fas fa-car",
-                label = Lang:t("info.resetlocks"),
-                targeticon = 'fas fa-car-side' -- This is the icon of the target itself, the icon changes to this when it turns blue on this specific option, this is OPTIONAL
-            }
-        },
-        distance = 1.0
-    })
-
-	local Blip = AddBlipForCoord(Config.KeyMasterLocation.x, Config.KeyMasterLocation.y, Config.KeyMasterLocation.z)
-	SetBlipSprite(Blip, 134)
-	SetBlipColour(Blip, 3)
-	--SetBlipScale(Blip, 0.8)
-	SetBlipDisplay(Blip, 4)
-	SetBlipAsShortRange(Blip, true)
-	BeginTextCommandSetBlipName("STRING")
-	AddTextComponentSubstringPlayerName(Lang:t('info.blip'))
-	EndTextCommandSetBlipName(Blip)
+            distance = 1.0
+        })
+        KeyMasters[index].blip = AddBlipForCoord(location.x, location.y, location.z)
+        SetBlipSprite(KeyMasters[index].blip, 134)
+        SetBlipColour(KeyMasters[index].blip, 3)
+        --SetBlipScale(KeyMasters[index].blip, 0.8)
+        SetBlipDisplay(KeyMasters[index].blip, 4)
+        SetBlipAsShortRange(KeyMasters[index].blip, true)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentSubstringPlayerName(Lang:t('info.blip'))
+        EndTextCommandSetBlipName(KeyMasters[index].blip)
+                
+    end
 end
 
 local function DeleteNpc()
-	if DoesEntityExist(KeyMaster) then
-		DeletePed(KeyMaster)
-	end
+    for k, v in pairs(KeyMasters) do
+        if DoesEntityExist(v.ped) then
+            DeletePed(v.ped)
+        end
+    end
 end
 
 local function KeyMenu(type)

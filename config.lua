@@ -3,7 +3,10 @@ Config = {}
 Config.NoLockVehicles = {}
 Config.LockpickNPCCars = true
 
-Config.KeyMasterLocation = vector4(170.01, -1799.37, 28.32, 326.65)
+Config.KeyMasterModel = 'cs_floyd'
+Config.KeyMasterLocations = {
+    vector4(170.01, -1799.37, 28.32, 326.65), 
+}
 Config.KeyPrice = 300
 Config.ResetPrice = 1000
 
