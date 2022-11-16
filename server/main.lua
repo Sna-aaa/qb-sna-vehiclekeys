@@ -104,13 +104,17 @@ QBCore.Functions.CreateCallback('qb-vehiclekeys:server:HasKey', function(source,
 		if VehicleList[plate] and VehicleList[plate][citizenid] then
 			cb(true)				
 		else
-			local result = MySQL.single.await('SELECT `lock` FROM player_vehicles WHERE plate = ?', { plate })
-			if result then
-				local lock = result.lock
-				local items = Player.Functions.GetItemsByName('vehiclekey')
-				if items then
-					for _, v in pairs(items) do
-						if v.info.plate == plate and v.info.lock == lock then
+			local items = Player.Functions.GetItemsByName('vehiclekey')
+			if items then
+				for _, v in pairs(items) do
+					if v.info.plate == plate then
+						local result = MySQL.single.await('SELECT `lock` FROM player_vehicles WHERE plate = ?', { plate })
+						if result then
+							local lock = result.lock
+							if v.info.lock == lock then
+								ok = true
+							end
+						else
 							ok = true
 						end
 					end

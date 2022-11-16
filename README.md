@@ -49,7 +49,6 @@ RegisterNetEvent('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, p
         SetEntityHeading(veh, Config.Shops[tempShop]["VehicleSpawn"].w)
         --TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))                                                       --Change comment
         TriggerServerEvent("qb-vehicletuning:server:SaveVehicleProps", QBCore.Functions.GetVehicleProperties(veh))
-        Wait(100)                                                                                                                          --Change Add
         TriggerServerEvent('qb-vehiclekeys:server:BuyVehicle', plate, GetLabelText(GetDisplayNameFromVehicleModel(GetEntityModel(veh))))   --Change Add
     end, vehicle, Config.Shops[tempShop]["VehicleSpawn"], true)
 end)
