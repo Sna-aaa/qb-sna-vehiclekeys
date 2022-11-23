@@ -95,6 +95,21 @@ RegisterNetEvent('qb-vehiclekeys:server:breakLockpick', function(itemName)
     end
 end)
 
+RegisterNetEvent('qb-vehiclekeys:server:RemoveKey', function(plate)
+	local src = source
+	local Player = QBCore.Functions.GetPlayer(src)
+	local items = Player.Functions.GetItemsByName('vehiclekey')
+	if items then
+		for _, v in pairs(items) do
+			if v.info.plate == plate then
+				if Player.Functions.RemoveItem('vehiclekey', 1, v.slot) then
+					TriggerClientEvent("inventory:client:ItemBox", src, QBCore.Shared.Items['vehiclekey'], "remove")
+				end
+			end
+		end
+	end
+end)
+
 QBCore.Functions.CreateCallback('qb-vehiclekeys:server:HasKey', function(source, cb, plate)
 	local src = source
 	local Player = QBCore.Functions.GetPlayer(src)

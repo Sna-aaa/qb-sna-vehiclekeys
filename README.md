@@ -15,6 +15,7 @@ Please join my discord : https://discord.gg/kvSwVzD8Rd
 - If the player have no key he can try to hotwire the car
 - For admin cars (/car) the car is now yours temporarly, so you have an "old style invisible key"
 - When a job spawn a free car, the player receives the same old style key, so no hotwire
+- When a car is sold, the key can be removed
 
 ## Requirements
 - [qb-core](https://github.com/qbcore-framework/qb-core)
@@ -89,4 +90,9 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
         end
     end, vehicle.plate, type)
 end)
+```
+
+This event can be used to automatically remove a key from player's inventory
+```lua
+    TriggerServerEvent('qb-vehiclekeys:server:RemoveKey', plate)
 ```
