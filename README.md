@@ -16,12 +16,15 @@ Please join my discord : https://discord.gg/kvSwVzD8Rd
 - For admin cars (/car) the car is now yours temporarly, so you have an "old style invisible key"
 - When a job spawn a free car, the player receives the same old style key, so no hotwire
 - When a car is sold, the key can be removed
+- Keys are never deleted or removed, and not given by the garage anymore, you need to keep the keys in your inventory
 
 ## Requirements
 - [qb-core](https://github.com/qbcore-framework/qb-core)
 
 ## Installation
-- Delete qb-vehiclekeys
+- Delete qb-vehiclekeys from qbcore
+
+- Install the new resource with a name THAT IS NOT qb-vehiclekeys
 
 - Copy the vehiclekeys image in img folder into qb-inventory\html\images
 
@@ -39,7 +42,9 @@ Please join my discord : https://discord.gg/kvSwVzD8Rd
             $(".item-info-description").html('<p>Plate : ' + itemData.info.plate + '</p>');
 ```
 
-Add call event for keys in qb-vehicleshop/client.lua and comment SetOwner call
+Basically 2 events are used for the vehicle keys in qb-vehicleshop/client.lua
+One event that will create a key when you buy the car 'qb-vehiclekeys:server:BuyVehicle' that you need to insert into your vehicle shop like this
+One event that will give a temporary key used for admin spawn car or job car 'vehiclekeys:client:SetOwner' that you need to remove/comment in the vehicleshop like this (this event is used in the complete qbcore solution)
 ```lua
 RegisterNetEvent('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, plate)
     tempShop = insideShop -- temp hacky way of setting the shop because it changes after the callback has returned since you are outside the zone
@@ -55,7 +60,7 @@ RegisterNetEvent('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, p
 end)
 ```
 
-Comment SetOwner call in your garage script, here in qb-garage/client/main.lua
+As the keys are already given by the shop, you need to remove the temporary key given in the garage 'vehiclekeys:client:SetOwner' so you need to remove/comment it in the gagare you use like this in qb-garage/client/main.lua
 ```lua
 RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
     local type = data.type
