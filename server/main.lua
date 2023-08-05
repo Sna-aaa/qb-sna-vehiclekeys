@@ -139,3 +139,36 @@ QBCore.Functions.CreateCallback('qb-vehiclekeys:server:HasKey', function(source,
 		end
 	end
 end)
+
+QBCore.Functions.CreateCallback('qb-vehiclekeys:server:GetPlayerVehicles', function(source, cb)
+    local Player = QBCore.Functions.GetPlayer(source)
+    local Vehicles = {}
+
+    MySQL.query('SELECT * FROM player_vehicles WHERE citizenid = ?', {Player.PlayerData.citizenid}, function(result)
+        if result[1] then
+            for _, v in pairs(result) do
+                local VehicleData = QBCore.Shared.Vehicles[v.vehicle]
+
+                local fullname
+                if VehicleData["brand"] ~= nil then
+                    fullname = VehicleData["brand"] .. " " .. VehicleData["name"]
+                else
+                    fullname = VehicleData["name"]
+                end
+                Vehicles[#Vehicles+1] = {
+                    fullname = fullname,
+                    brand = VehicleData["brand"],
+                    model = VehicleData["name"],
+                    plate = v.plate,
+                    state = v.state,
+                    fuel = v.fuel,
+                    engine = v.engine,
+                    body = v.body
+                }
+            end
+            cb(Vehicles)
+        else
+            cb(nil)
+        end
+    end)
+end)

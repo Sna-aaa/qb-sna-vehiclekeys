@@ -319,7 +319,7 @@ local function KeyMenu(type)
             isMenuHeader = true,
         }
     }
-	QBCore.Functions.TriggerCallback('qb-garage:server:GetPlayerVehicles', function(vehicles)
+	QBCore.Functions.TriggerCallback('qb-vehiclekeys:server:GetPlayerVehicles', function(vehicles)
 		for k, v in pairs(vehicles) do
 			local price
 			local event
