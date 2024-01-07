@@ -16,7 +16,7 @@ Please join my discord : https://discord.gg/kvSwVzD8Rd
 - For admin cars (/car) the car is now yours temporarly, so you have an "old style invisible key"
 - When a job spawn a free car, the player receives the same old style key, so no hotwire
 - When a car is sold, the key can be removed
-- Keys are never deleted or removed, and not given by the garage anymore, you need to keep the keys in your inventory
+- Keys are never deleted or removed, and not given by the garage anymore, you need to keep the keys in your inventory or storage
 
 ## Requirements
 - [qb-core](https://github.com/qbcore-framework/qb-core)
@@ -32,19 +32,23 @@ Please join my discord : https://discord.gg/kvSwVzD8Rd
 
 - Add in qb-core/shared/items.lua
 ```lua
-	['vehiclekey'] 				 	 = {['name'] = 'vehiclekey',					['label'] = 'Vehicle key', 					['weight'] = 0, 		['type'] = 'item', 		['image'] = 'vehiclekeys.png', 				['unique'] = true, 	['useable'] = true, 	['shouldClose'] = true,	   ['combinable'] = nil,   ['description'] = "This is a car key, take good care of it, if you lose it you probably won't be able to use your car"},
+    vehiclekey                   = { name = 'vehiclekey', label = 'Vehicle key', weight = 10, type = 'item', image = 'vehiclekeys.png', unique = true, useable = true, shouldClose = true, combinable = nil, description = "This is a car key, take good care of it, if you lose it you probably won't be able to use your car" },
 ```
 
-- Add item info to qb-inventory\html\js\app.js in function FormatItemInfo
+- Add item info to qb-inventory\html\js\app.js around line 395 in function generateDescription
 ```js
-        } else if (itemData.name == "vehiclekey") {
-            $(".item-info-title").html('<p>' + itemData.info.model + '</p>');
-            $(".item-info-description").html('<p>Plate : ' + itemData.info.plate + '</p>');
+        case "labkey":
+            return `<p>Lab: ${itemData.info.lab}</p>`;
+        case "vehiclekey":                                                                      //Change Add
+                return `<p><strong>Car: </strong><span>${itemData.info.model}</span></p>
+                <p><strong>Plate: </strong><span>${itemData.info.plate}</span></p>`;            //Change Add
+        default:
+            return itemData.description;
 ```
 
 Basically 2 events are used for the vehicle keys in qb-vehicleshop/client.lua
 One event that will create a key when you buy the car 'qb-vehiclekeys:server:BuyVehicle' that you need to insert into your vehicle shop like this
-One event that will give a temporary key used for admin spawn car or job car 'vehiclekeys:client:SetOwner' that you need to remove/comment in the vehicleshop like this (this event is used in the complete qbcore solution)
+One event that will give a temporary key used for admin spawn car or job car 'vehiclekeys:client:SetOwner' that you need to remove/comment in the vehicleshop like this (this event is used in the complete qbcore solution, but sometimes a dev tries to be original and use an event nobody use 'qb-vehiclekeys:server:AcquireVehicleKeys', this is the same as 'vehiclekeys:client:SetOwner')
 ```lua
 RegisterNetEvent('qb-vehicleshop:client:buyShowroomVehicle', function(vehicle, plate)
     tempShop = insideShop -- temp hacky way of setting the shop because it changes after the callback has returned since you are outside the zone
