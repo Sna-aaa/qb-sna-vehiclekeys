@@ -320,30 +320,32 @@ local function KeyMenu(type)
         }
     }
 	QBCore.Functions.TriggerCallback('qb-vehiclekeys:server:GetPlayerVehicles', function(vehicles)
-		for k, v in pairs(vehicles) do
-			local price
-			local event
-			if type == "give" then
-				price = Config.KeyPrice
-				event = "qb-vehiclekeys:server:GiveKey"
-			else
-				price = Config.ResetPrice
-				event = "qb-vehiclekeys:server:ChangeLocks"
-			end
-            vehMenu[#vehMenu+1] = {
-                id = k+1,
-                header = Lang:t('info.'..type..'keyitem', {value = v.fullname, value2 = v.plate}),
-                txt = price,
-                params = {
-					isServer = true,
-                    event = event,
-                    args = {
-                        plate = v.plate,
-						model = v.fullname,
+        if vehicles then
+            for k, v in pairs(vehicles) do
+                local price
+                local event
+                if type == "give" then
+                    price = Config.KeyPrice
+                    event = "qb-vehiclekeys:server:GiveKey"
+                else
+                    price = Config.ResetPrice
+                    event = "qb-vehiclekeys:server:ChangeLocks"
+                end
+                vehMenu[#vehMenu+1] = {
+                    id = k+1,
+                    header = Lang:t('info.'..type..'keyitem', {value = v.fullname, value2 = v.plate}),
+                    txt = price,
+                    params = {
+                        isServer = true,
+                        event = event,
+                        args = {
+                            plate = v.plate,
+                            model = v.fullname,
+                        }
                     }
                 }
-            }
-		end
+            end
+        end
 		exports['qb-menu']:openMenu(vehMenu)
 	end)	
 end
