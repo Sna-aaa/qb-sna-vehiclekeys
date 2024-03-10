@@ -135,7 +135,19 @@ local function LockpickDoor(isAdvanced)
     if GetVehicleDoorLockStatus(vehicle) <= 0 then return end
 
     usingAdvanced = isAdvanced
-    TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
+	if Config.usePSUI then
+		loadAnimDict("veh@break_in@0h@p_m_one@") -- adding animation while lockpicking	
+		TaskPlayAnim(ped, "veh@break_in@0h@p_m_one@", "low_force_entry_ds", 3.0, 3.0, -1, 16, 0, 0, 0, 0)-- adding animation while lockpicking	
+		exports['ps-ui']:Circle(function(success)	
+		if success then	
+			lockpickFinish(success)	
+		else	
+			QBCore.Functions.Notify("You failed lock-pick the vehicle!", "error")	
+		end	
+		end, 2, 20) -- NumberOfCircles, MS
+	else
+		TriggerEvent('qb-lockpick:client:openLockpick', lockpickFinish)
+	end
 end
 
 function lockpickFinish(success)
